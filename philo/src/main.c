@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/02 14:02:15 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 16:40:22 by ggevorgi         ###   ########.fr       */
+/*   Created: 2025/04/07 20:05:01 by ggevorgi          #+#    #+#             */
+/*   Updated: 2025/04/07 20:05:01 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	do_single_philo(t_philosopher *philo)
 {
-		log_action(philo, "has taken a fork", philo->table);
+		log_action(philo, "has taken a fork", philo->table, 0);
 		usleep(philo->table->time_to_die * 1000);
-		log_action(philo, "died", philo->table);
+		log_action(philo, "died", philo->table, 1);
 		philo->table->simulation_running = 0;
 }
 
@@ -24,20 +24,20 @@ void	try_take_forks_and_eat(t_philosopher *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		usleep(1000);
+		usleep(500);
 	    pthread_mutex_lock(philo->right_fork);
-	    log_action(philo, "has taken a fork", philo->table);
+	    log_action(philo, "has taken a fork", philo->table, 0);
 	    pthread_mutex_lock(philo->left_fork);
-	    log_action(philo, "has taken a fork", philo->table);
+	    log_action(philo, "has taken a fork", philo->table, 0);
 	}
 	else
 	{
 	    pthread_mutex_lock(philo->left_fork);
-	    log_action(philo, "has taken a fork", philo->table);
+	    log_action(philo, "has taken a fork", philo->table, 0);
 	    pthread_mutex_lock(philo->right_fork);
-	    log_action(philo, "has taken a fork", philo->table);
+	    log_action(philo, "has taken a fork", philo->table, 0);
 	}
-	log_action(philo, "is eating", philo->table);
+	log_action(philo, "is eating", philo->table, 0);
     usleep(philo->table->time_to_eat * 1000);
      // Обновляем время последней еды
 	pthread_mutex_lock(&philo->table->last_meal_time_mutex);
@@ -74,9 +74,9 @@ void* philosopher_routine(void* arg)
 		}
 		pthread_mutex_unlock(&philo->table->simulation_mutex);
 
-		log_action(philo, "is thinking", philo->table);
+		log_action(philo, "is thinking", philo->table, 0);
 		try_take_forks_and_eat(philo);
-		log_action(philo, "is sleeping", philo->table);
+		log_action(philo, "is sleeping", philo->table, 0);
 		usleep(philo->table->time_to_sleep * 1000);
 	}
 
@@ -114,10 +114,11 @@ void* monitor_deaths(void* arg)
 				pthread_mutex_lock(&table->simulation_mutex);
 				if (table->simulation_running)
 				{
-					log_action(philo, "died", philo->table);
+					log_action(philo, "died", philo->table, 1);
 					table->simulation_running = 0;
 				}
 				pthread_mutex_unlock(&table->simulation_mutex);
+				pthread_mutex_unlock(&philo->table->last_meal_time_mutex);
 				return NULL;
 			}
 			pthread_mutex_unlock(&philo->table->last_meal_time_mutex);

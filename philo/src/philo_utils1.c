@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:24:24 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/04 16:44:57 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:03:18 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,23 @@ long get_time_in_ms(void)
     return (tv.tv_sec * 1000L) + (tv.tv_usec / 1000L);
 }
 
-void log_action(t_philosopher *philo, const char *action, t_table *data)
+void log_action(t_philosopher *philo, const char *action, t_table *data, int is_death)
 {
-    long timestamp_in_ms;
+	long timestamp_in_ms;
+
+	if (!is_death)
+	{
+		pthread_mutex_lock(&data->simulation_mutex);
+		if (!data->simulation_running)
+		{
+			pthread_mutex_unlock(&data->simulation_mutex);
+			return;
+		}
+		pthread_mutex_unlock(&data->simulation_mutex);
+	}
 
 	timestamp_in_ms = get_time_in_ms() - data->start_time;
-    pthread_mutex_lock(&data->log_mutex);
-    printf("%ld %d %s\n", timestamp_in_ms, philo->id + 1, action);
-    pthread_mutex_unlock(&data->log_mutex);
+	pthread_mutex_lock(&data->log_mutex);
+	printf("%ld %d %s\n", timestamp_in_ms, philo->id + 1, action);
+	pthread_mutex_unlock(&data->log_mutex);
 }
-
