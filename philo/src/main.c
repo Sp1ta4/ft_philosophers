@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 20:05:01 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 20:05:01 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:18:12 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,8 @@ int main(int argc, char *argv[])
 	if (is_valid(argc, argv))
 	{
 		init_data(&data, argc, argv);
+		// if (!init_data(&data, argc, argv))
+			// throw_err(2, &data);
 		start_simulation(&data);
 		destroy_philo_mutexes(&data);
 		pthread_mutex_destroy(&(data.log_mutex));

@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:04:16 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 20:03:34 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:19:23 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		is_valid(int argc, char **argv);
 int		ft_atoi(const char *nptr);
 void	ft_putstr_fd(char *s, int fd);
 void	throw_err(int nerr, t_table *data);
-void	init_data(t_table *data, int argc, char **argv);
+void	    init_data(t_table *data, int argc, char **argv);
 void	create_philosophers(t_table *data);
 void*	philosopher_routine(void* arg);
 long	get_time_in_ms(void);

@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:24:24 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 20:03:18 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:12:54 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,23 @@ void	ft_putstr_fd(char *s, int fd)
 		s++;
 	}
 }
+
+void	free_data(t_table *data)
+{
+	if (!data)
+		return;
+	destroy_philo_mutexes(data);
+	pthread_mutex_destroy(&data->simulation_mutex);
+	pthread_mutex_destroy(&data->last_meal_time_mutex);
+	pthread_mutex_destroy(&data->log_mutex);
+}
+
+
+
 void	throw_err(int nerr, t_table *data)
 {
-	(void)data;
-	// if (data)
-	// 	free_data(data);
+	if (data)
+		free_data(data);
 	if (nerr == 0)
 	{
 		ft_putstr_fd("Error: Insufficient arguments.\n", 2);
