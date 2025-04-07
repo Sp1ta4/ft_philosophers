@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:04:16 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 21:19:23 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:31:03 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #	include <unistd.h>
 #	include <sys/time.h>
 #	include <pthread.h>
+#	include <limits.h>
 
 typedef struct s_table t_table;
 

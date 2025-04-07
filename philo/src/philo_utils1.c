@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:24:24 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 21:12:54 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:38:11 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ void	throw_err(int nerr, t_table *data)
 		ft_putstr_fd("Usage: number_of_philosophers time_to_die time_to_eat", 2);
 		ft_putstr_fd(" time_to_sleep [number_of_times_each_philosopher_must_eat]\n", 2);
 	}
+	else if (nerr == 1)
+		ft_putstr_fd("Programm error!\n", 2);
+	else if (nerr == 3)
+		ft_putstr_fd("Error: Invalid arguments.\nYour arguments need to be an unsigned integer", 2);
+
 	exit(1);
 }
 

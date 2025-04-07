@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 20:05:01 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 21:18:12 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:41:00 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,6 @@ void* monitor_deaths(void* arg)
 	return NULL;
 }
 
-
-
 void start_simulation(t_table *data)
 {
 	pthread_t monitor_thread;
@@ -157,16 +155,12 @@ void start_simulation(t_table *data)
 		pthread_join(monitor_thread, NULL);
 }
 
-
-
 int main(int argc, char *argv[])
 {
 	t_table	data;
 	if (is_valid(argc, argv))
 	{
 		init_data(&data, argc, argv);
-		// if (!init_data(&data, argc, argv))
-			// throw_err(2, &data);
 		start_simulation(&data);
 		destroy_philo_mutexes(&data);
 		pthread_mutex_destroy(&(data.log_mutex));
