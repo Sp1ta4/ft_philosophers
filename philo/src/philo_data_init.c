@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:36:32 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/04 16:49:01 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:13:50 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	create_philosophers(t_table *data)
 		data->philosophers[i].right_fork = &(data->forks[(i + 1) % data->num_philosophers]);
 		data->philosophers[i].meals_eaten = 0; 
 		data->philosophers[i].table = data;
+		pthread_mutex_init(&(data->philosophers[i].meals_mutex), NULL);
 		pthread_create(&(data->philosophers[i].thread), NULL, philosopher_routine, &(data->philosophers[i]));
 		i++;
 	}	
@@ -47,15 +48,18 @@ static void	create_forks(t_table *data)
 	}
 }
 
-void	destroy_forks(t_table *data)
+void	destroy_philo_mutexes(t_table *data)
 {
 	int	i;
 
 	i = 0;
 	while (i < data->num_philosophers)
 	{
-		if (pthread_mutex_destroy(&(data->forks[i++])) != 0)
+		if (pthread_mutex_destroy(&(data->forks[i])) != 0)
 			throw_err(1, data);
+		if (pthread_mutex_destroy(&(data->philosophers[i].meals_mutex)) != 0)
+			throw_err(1, data);
+		i++;
 	}
 }
 
@@ -74,6 +78,7 @@ void	init_data(t_table *data, int argc, char **argv)
 	else
 		data->must_eat_count = -1;
 	pthread_mutex_init(&(data->simulation_mutex), NULL);
+	pthread_mutex_init(&(data->last_meal_time_mutex), NULL);
 	pthread_mutex_init(&(data->log_mutex), NULL);
 	create_forks(data);
 }

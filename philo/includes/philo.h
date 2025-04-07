@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:04:16 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/04 16:42:12 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:13:15 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct	s_philosopher {
 	pthread_t		thread;
     pthread_mutex_t	*left_fork;
     pthread_mutex_t	*right_fork;
+    pthread_mutex_t	meals_mutex;
+
 } t_philosopher;
 
 typedef struct	s_table {
@@ -43,6 +45,7 @@ typedef struct	s_table {
     t_philosopher	*philosophers;
 	pthread_mutex_t	*forks;
     pthread_mutex_t	simulation_mutex;
+    pthread_mutex_t	last_meal_time_mutex;
     pthread_mutex_t	log_mutex;
 } t_table;
 
@@ -55,6 +58,6 @@ void	create_philosophers(t_table *data);
 void*	philosopher_routine(void* arg);
 long	get_time_in_ms(void);
 void	log_action(t_philosopher *philo, const char *action, t_table *data);
-void	destroy_forks(t_table *data);
+void	destroy_philo_mutexes(t_table *data);
 
 #endif
