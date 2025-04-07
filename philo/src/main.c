@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 20:05:01 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 21:41:00 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:41:13 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,70 +95,13 @@ void	wait_philosophers(t_philosopher *philosophers)
 	}
 }
 
-void* monitor_deaths(void* arg)
-{
-	t_table *table = (t_table *)arg;
-	int		i;
-	int eaten_enough_count;
-	while (1)
-	{
-		eaten_enough_count = 0;
-		i = 0;
-		while (i < table->num_philosophers)
-		{
-			t_philosopher *philo = &table->philosophers[i];
-			long current_time = get_time_in_ms();
-			pthread_mutex_lock(&philo->table->last_meal_time_mutex);
-			if (current_time - philo->last_meal_time > table->time_to_die)
-			{
-				pthread_mutex_lock(&table->simulation_mutex);
-				if (table->simulation_running)
-				{
-					log_action(philo, "died", philo->table, 1);
-					table->simulation_running = 0;
-				}
-				pthread_mutex_unlock(&table->simulation_mutex);
-				pthread_mutex_unlock(&philo->table->last_meal_time_mutex);
-				return NULL;
-			}
-			pthread_mutex_unlock(&philo->table->last_meal_time_mutex);
-			pthread_mutex_lock(&philo->meals_mutex);
-			if (philo->meals_eaten >= table->must_eat_count)
-				eaten_enough_count++;
-			pthread_mutex_unlock(&philo->meals_mutex);
 
-			i++;
-		}
-		if (table->must_eat_count > 0 && eaten_enough_count == table->num_philosophers)
-		{
-			pthread_mutex_lock(&table->simulation_mutex);
-			table->simulation_running = 0;
-			pthread_mutex_unlock(&table->simulation_mutex);
-			return NULL;
-		}
-		usleep(1000);
-	}
-	return NULL;
-}
 
-void start_simulation(t_table *data)
-{
-	pthread_t monitor_thread;
-
-	data->simulation_running = 1;
-	data->start_time = get_time_in_ms();
-	create_philosophers(data);
-	if (data->num_philosophers > 1)
-		pthread_create(&monitor_thread, NULL, monitor_deaths, data);
-	wait_philosophers(data->philosophers);
-	if (data->num_philosophers > 1)
-		pthread_join(monitor_thread, NULL);
-}
 
 int main(int argc, char *argv[])
 {
 	t_table	data;
-	if (is_valid(argc, argv))
+	if (is_valid(argc))
 	{
 		init_data(&data, argc, argv);
 		start_simulation(&data);
