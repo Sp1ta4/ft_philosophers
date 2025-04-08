@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:04:16 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/07 22:43:40 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/08 10:05:29 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	log_action(t_philosopher *philo, const char *action,
 void	start_simulation(t_table *data);
 void	wait_philosophers(t_philosopher *philosophers);
 void	destroy_philo_mutexes(t_table *data);
-long	get_time_in_ms(void);
+void	free_data(t_table *data);
 void	*philosopher_routine(void *arg);
+long	get_time_in_ms(void);
 
 #endif
