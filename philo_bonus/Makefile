@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 
-NAME = philo
+NAME = philo_bonus
 SRC_DIR = src
 INCLUDE = -I includes
 
@@ -10,7 +10,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = cc
 RM = rm -f
-CFLAGS = -Wall -Werror -Wextra -pthread
+CFLAGS = -Wall -Werror -Wextra -pthread -fsanitize=thread
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
