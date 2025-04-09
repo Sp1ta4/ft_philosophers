@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:24:24 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/08 10:46:35 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/09 13:19:57 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
-void	free_data(t_table *data)
-{
-	if (!data)
-		return ;
-	free(data->philosophers);
-	sem_destroy(data->forks);
-	data->forks = NULL;
-	data->philosophers = NULL;
-
-}
 
 void	throw_err(int nerr, t_table *data)
 {
@@ -69,14 +59,11 @@ long	get_time_in_ms(void)
 	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000L));
 }
 
-void	log_action(t_philosopher *philo, const char *action,
-	t_table *data, int is_death)
+void	log_action(t_philosopher *philo, const char *action, t_table *table, int is_death)
 {
-	long	timestamp_in_ms;
-
+	sem_wait(table->print_sem);
+	printf("%ld %d %s\n", get_time_in_ms() - table->start_time, philo->id, action);
 	if (!is_death)
-		if (!data->simulation_running)
-			return ;
-	timestamp_in_ms = get_time_in_ms() - data->start_time;
-	printf("%ld %d %s\n", timestamp_in_ms, philo->id + 1, action);
+		sem_post(table->print_sem);
 }
+
