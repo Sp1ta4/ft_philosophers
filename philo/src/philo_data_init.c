@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:36:32 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/08 10:03:17 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:56:15 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	create_philosophers(t_table *data)
 	while (i < data->num_philosophers)
 	{
 		data->philosophers[i].id = i;
-		data->philosophers[i].last_meal_time = 0;
+		data->philosophers[i].last_meal_time = get_time_in_ms();
 		data->philosophers[i].left_fork = &(data->forks[i]);
 		data->philosophers[i].right_fork = &(data->forks[(i + 1)
 				% data->num_philosophers]);

@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 10:00:52 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/08 10:01:50 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:59:08 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ static void	try_take_forks_and_eat(t_philosopher *philo)
 	}
 	log_action(philo, "is eating", philo->table, 0);
 	usleep(philo->table->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_lock(&philo->table->last_meal_time_mutex);
 	philo->last_meal_time = get_time_in_ms();
 	pthread_mutex_unlock(&philo->table->last_meal_time_mutex);
 	pthread_mutex_lock(&philo->meals_mutex);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meals_mutex);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
 }
 
 void	*philosopher_routine(void *arg)
