@@ -19,7 +19,7 @@ void free_data(t_table *data)
 void	check_die(t_philosopher *philo)
 {
 	sem_wait(philo->table->last_eat_time_sem);
-	if (get_time_in_ms() - philo->last_meal_time >= philo->table->time_to_die)
+	if (get_time_in_ms() - philo->last_meal_time > philo->table->time_to_die)
 	{
 		log_action(philo, "died", philo->table, 1);
 		exit(1);
@@ -86,6 +86,7 @@ static void *monitor_death(t_philosopher *philo)
 		log_action(philo, "is sleeping", philo->table, 0);
 		usleep(philo->table->time_to_sleep * 1000);
 		log_action(philo, "is thinking", philo->table, 0);
+		usleep(100);
 	}
 	exit(0);
 }
