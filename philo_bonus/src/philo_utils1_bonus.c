@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:24:24 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/10 09:39:31 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:38:51 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_putstr_fd(char *s, int fd)
 		s++;
 	}
 }
-
 
 void	throw_err(int nerr, t_table *data)
 {
@@ -59,11 +58,19 @@ long	get_time_in_ms(void)
 	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000L));
 }
 
-void	log_action(t_philosopher *philo, const char *action, t_table *table, int is_death)
+void	got_eat_time(t_philosopher *philo)
+{
+	sem_wait(philo->table->last_eat_time_sem);
+	philo->last_meal_time = get_time_in_ms();
+	sem_post(philo->table->last_eat_time_sem);
+}
+
+void	log_action(t_philosopher *philo, const char *action,
+			t_table *table, int is_death)
 {
 	sem_wait(table->print_sem);
-	printf("%ld %d %s\n", get_time_in_ms() - table->start_time, philo->id, action);
+	printf("%ld %d %s\n", get_time_in_ms() - table->start_time,
+		philo->id, action);
 	if (!is_death)
 		sem_post(table->print_sem);
 }
-
