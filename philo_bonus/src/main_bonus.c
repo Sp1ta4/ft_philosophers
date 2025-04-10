@@ -16,7 +16,7 @@ void free_data(t_table *data)
 	sem_unlink(EACH_EAT_SEM_NAME);
 }
 
-int	check_die(t_philosopher *philo)
+void	check_die(t_philosopher *philo)
 {
 	sem_wait(philo->table->last_eat_time_sem);
 	if (get_time_in_ms() - philo->last_meal_time >= philo->table->time_to_die)
@@ -25,10 +25,9 @@ int	check_die(t_philosopher *philo)
 		exit(1);
 	}
 	sem_post(philo->table->last_eat_time_sem);
-	return (0);
 }
 
-int	check_eat(t_philosopher *philo)
+void	check_eat(t_philosopher *philo)
 {
 	sem_wait(philo->table->each_eat_sem);
 	if (philo->meals_eaten == philo->table->must_eat_count)
@@ -37,7 +36,6 @@ int	check_eat(t_philosopher *philo)
 		exit (0);
 	}
 	sem_post(philo->table->each_eat_sem);
-	return (0);
 }
 
 
@@ -69,18 +67,19 @@ static void *monitor_death(t_philosopher *philo)
 {
 	while (1)
 	{
-		if (check_die(philo) == 1 || check_eat(philo) == 1)
-			break ;
+		check_die(philo);
+		check_eat(philo);
+		usleep(1000);
 	}
 	return (NULL);
 }
-
-void philosopher_routine(t_philosopher *philo)
+ void philosopher_routine(t_philosopher *philo)
 {
 	if (philo->table->num_philosophers == 1)
 		do_single_philo(philo);
-	pthread_create(&philo->monitoring_thread, NULL, (void *)monitor_death, philo);
 	got_eat_time(philo);
+	pthread_create(&philo->monitoring_thread, NULL, (void *)monitor_death, philo);
+	pthread_detach(philo->monitoring_thread);
 	while (1)
 	{
 		try_take_forks_and_eat(philo);
@@ -88,7 +87,6 @@ void philosopher_routine(t_philosopher *philo)
 		usleep(philo->table->time_to_sleep * 1000);
 		log_action(philo, "is thinking", philo->table, 0);
 	}
-	pthread_join(philo->monitoring_thread, NULL);
 	exit(0);
 }
 
@@ -97,18 +95,20 @@ void create_philosophers(t_table *data)
 	int i;
 
 	data->start_time = get_time_in_ms();
-
 	i = -1;
+	int fd = open("txt.txt", O_CREAT | O_WRONLY, 777);
 	while (++i < data->num_philosophers)
 	{
 		data->philosophers[i].id = i + 1;
-		data->philosophers[i].last_meal_time = LLONG_MAX;
+		data->philosophers[i].last_meal_time = data->start_time;
 		data->philosophers[i].meals_eaten = 0;
 		data->philosophers[i].table = data;
 
 		data->pids[i] = fork();
-		if (data->pids[i] == 0)
+		if (data->pids[i] == 0) {
+			ft_putstr_fd("Hello\n",fd);
 			philosopher_routine(&data->philosophers[i]);
+		}
 		else if (data->pids[i] == -1)
 			throw_err(FORK_ERROR, data);
 	}
@@ -121,7 +121,7 @@ void start_simulation(t_table *data)
 
 	create_philosophers(data);
 	i = -1;
-	while (++i <= data->num_philosophers)
+	while (++i < data->num_philosophers)
 	{
 		waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) > 0)
