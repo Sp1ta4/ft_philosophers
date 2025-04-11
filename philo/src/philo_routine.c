@@ -24,20 +24,11 @@ static void	*do_single_philo(t_philosopher *philo)
 static void	try_take_forks_and_eat(t_philosopher *philo)
 {
 	if (philo->id % 2 == 0)
-	{
 		usleep(500);
-		pthread_mutex_lock(philo->right_fork);
-		log_action(philo, "has taken a fork", philo->table, 0);
-		pthread_mutex_lock(philo->left_fork);
-		log_action(philo, "has taken a fork", philo->table, 0);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->left_fork);
-		log_action(philo, "has taken a fork", philo->table, 0);
-		pthread_mutex_lock(philo->right_fork);
-		log_action(philo, "has taken a fork", philo->table, 0);
-	}
+	pthread_mutex_lock(philo->right_fork);
+	log_action(philo, "has taken a fork", philo->table, 0);
+	pthread_mutex_lock(philo->left_fork);
+	log_action(philo, "has taken a fork", philo->table, 0);
 	log_action(philo, "is eating", philo->table, 0);
 	usleep(philo->table->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->left_fork);
