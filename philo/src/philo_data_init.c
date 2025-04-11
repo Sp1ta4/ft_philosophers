@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:36:32 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/10 16:56:15 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:17:35 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ static void	create_forks(t_table *data)
 	data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
 			* data->num_philosophers);
 	if (!data->forks)
-		exit(2);
+		throw_err(MALLOC_ERROR, data);
 	i = 0;
 	while (i < data->num_philosophers)
 	{
 		if (pthread_mutex_init(&(data->forks[i++]), NULL) != 0)
-			throw_err(1, data);
+			throw_err(PROGRAMM_ERROR, data);
 	}
 }
 
@@ -61,9 +61,9 @@ void	destroy_philo_mutexes(t_table *data)
 	while (i < data->num_philosophers)
 	{
 		if (pthread_mutex_destroy(&(data->forks[i])) != 0)
-			throw_err(1, data);
+			throw_err(PROGRAMM_ERROR, data);
 		if (pthread_mutex_destroy(&(data->philosophers[i].meals_mutex)) != 0)
-			throw_err(1, data);
+			throw_err(PROGRAMM_ERROR, data);
 		i++;
 	}
 }
@@ -83,10 +83,14 @@ void	init_data(t_table *data, int argc, char **argv)
 	else
 		data->must_eat_count = -1;
 	if (data->time_to_die <= 0 || data->time_to_eat <= 0
-		|| data->time_to_sleep <= 0 || data->must_eat_count == 0)
-		throw_err(3, NULL);
-	if (data->num_philosophers <= 0 || data->num_philosophers > 200)
-		throw_err(4, NULL);
+		|| data->time_to_sleep <= 0 || (argc == 6 && data->must_eat_count <= 0))
+		throw_err(VALUE_ERROR, NULL);
+	if (data->num_philosophers <= 0 || data->num_philosophers > MAX_PHILOS)
+		throw_err(PHILO_ERROR, NULL);
+	data->philosophers = (t_philosopher *)malloc(sizeof(t_philosopher)
+			* data->num_philosophers);
+	if (!data->philosophers)
+		throw_err(MALLOC_ERROR, NULL);
 	pthread_mutex_init(&(data->simulation_mutex), NULL);
 	pthread_mutex_init(&(data->last_meal_time_mutex), NULL);
 	pthread_mutex_init(&(data->log_mutex), NULL);

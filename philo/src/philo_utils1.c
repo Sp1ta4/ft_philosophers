@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:24:24 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/08 10:04:14 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/11 09:53:09 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	throw_err(int nerr, t_table *data)
 {
 	if (data)
 		free_data(data);
-	if (nerr == 0)
+	if (nerr == ARGUMENT_ERROR)
 	{
 		ft_putstr_fd("Error: Insufficient arguments.\n", 2);
 		ft_putstr_fd("Usage: number_of_philosophers", 2);
@@ -49,14 +49,14 @@ void	throw_err(int nerr, t_table *data)
 		ft_putstr_fd(" time_to_sleep", 2);
 		ft_putstr_fd(" [number_of_times_each_philosopher_must_eat]\n", 2);
 	}
-	else if (nerr == 1)
+	else if (nerr == PROGRAMM_ERROR)
 		ft_putstr_fd("Programm error!\n", 2);
-	else if (nerr == 3)
+	else if (nerr == VALUE_ERROR)
 	{
 		ft_putstr_fd("Error: Invalid arguments.\n", 2);
 		ft_putstr_fd("Your arguments need to be an unsigned integer\n", 2);
 	}
-	else if (nerr == 4)
+	else if (nerr == PHILO_ERROR)
 	{
 		ft_putstr_fd("Error: Invalid number of Philosophers.\n", 2);
 		ft_putstr_fd("Num of philo must be 1-200\n", 2);

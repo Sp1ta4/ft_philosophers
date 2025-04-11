@@ -6,12 +6,23 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:04:16 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/08 10:05:29 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/11 09:53:23 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# define MAX_PHILOS 200
+# define FORKS_SEM_NAME "/forks_sem"
+# define PRINT_SEM_NAME "/print_sem"
+# define EACH_EAT_SEM_NAME "/each_eat_sem"
+# define LAST_EAT_TIME_SEM_NAME "/last_eat_time_sem"
+# define ARGUMENT_ERROR 0
+# define VALUE_ERROR 1
+# define PHILO_ERROR 2
+# define MALLOC_ERROR 3
+# define PROGRAMM_ERROR 4
 
 # include <string.h>
 # include <stdio.h>
