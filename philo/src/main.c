@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 20:05:01 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/11 10:17:46 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:35:19 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,3 @@ int	main(int argc, char *argv[])
 	free_data(&data);
 	return (0);
 }
- 

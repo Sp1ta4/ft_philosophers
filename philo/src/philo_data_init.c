@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:36:32 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/11 10:17:35 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:18:43 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@ void	create_philosophers(t_table *data)
 {
 	int	i;
 
-	data->philosophers = (t_philosopher *)malloc(sizeof(t_philosopher)
-			* data->num_philosophers);
-	if (!data->philosophers)
-		exit(2);
 	i = 0;
 	while (i < data->num_philosophers)
 	{

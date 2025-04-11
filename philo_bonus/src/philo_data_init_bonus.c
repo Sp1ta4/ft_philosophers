@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:36:32 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/10 16:45:18 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:25:53 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	init_data(t_table *data, int argc, char **argv)
 	data->philosophers = (t_philosopher *)malloc(sizeof(t_philosopher)
 			* data->philo_num);
 	if (!data->philosophers)
-		throw_err(MALLOC_ERROR, NULL);
+		throw_err(MALLOC_ERROR, data);
 	data->pids = (pid_t *)malloc(sizeof(pid_t)
 			* data->philo_num);
 	if (!data->pids)
-		throw_err(MALLOC_ERROR, NULL);
+		throw_err(MALLOC_ERROR, data);
 	init_semaphore(&data->forks_sem, FORKS_SEM_NAME, data->philo_num, data);
 	init_semaphore(&data->each_eat_sem, EACH_EAT_SEM_NAME, 1, data);
 	init_semaphore(&data->last_eat_time_sem, LAST_EAT_TIME_SEM_NAME, 1, data);

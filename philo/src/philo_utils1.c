@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:24:24 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/11 09:53:09 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:17:11 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ void	free_data(t_table *data)
 	if (!data)
 		return ;
 	destroy_philo_mutexes(data);
-	free(data->forks);
-	free(data->philosophers);
-	data->forks = NULL;
-	data->philosophers = NULL;
+	if (data->forks)
+	{
+		free(data->forks);
+		data->forks = NULL;
+	}
+	if (data->philosophers)
+	{
+		free(data->philosophers);
+		data->philosophers = NULL;
+	}
 	pthread_mutex_destroy(&data->simulation_mutex);
 	pthread_mutex_destroy(&data->last_meal_time_mutex);
 	pthread_mutex_destroy(&data->log_mutex);
