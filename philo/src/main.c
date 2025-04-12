@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 20:05:01 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/11 10:35:19 by ggevorgi         ###   ########.fr       */
+/*   Created: 2025/04/12 11:04:45 by ggevorgi          #+#    #+#             */
+/*   Updated: 2025/04/12 13:28:58 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 int	main(int argc, char *argv[])
 {
-	t_table	data;
-
-	if (argc < 5 || argc > 6)
-		throw_err(ARGUMENT_ERROR, NULL);
-	init_data(&data, argc, argv);
-	start_simulation(&data);
-	free_data(&data);
+	t_data	data;
+	
+	if (argc == 5 || argc == 6)
+	{
+		parse_input(&data, argv);
+		// printf("%d %d %d %d %d\n", data.philo_num, data.time_to_die, data.time_to_eat, data.time_to_sleep, data.must_eat_count);
+		// init_data();
+		// start_simulation();
+		clean(&data);
+	}
+	else
+		return (throw_err(INVALID_ARG_CNT_ERROR, NULL));
 	return (0);
 }

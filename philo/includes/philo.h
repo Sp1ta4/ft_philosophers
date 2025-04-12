@@ -5,77 +5,64 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/02 14:04:16 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/11 09:53:23 by ggevorgi         ###   ########.fr       */
+/*   Created: 2025/04/12 13:32:09 by ggevorgi          #+#    #+#             */
+/*   Updated: 2025/04/12 13:32:58 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# define MAX_PHILOS 200
-# define FORKS_SEM_NAME "/forks_sem"
-# define PRINT_SEM_NAME "/print_sem"
-# define EACH_EAT_SEM_NAME "/each_eat_sem"
-# define LAST_EAT_TIME_SEM_NAME "/last_eat_time_sem"
-# define ARGUMENT_ERROR 0
-# define VALUE_ERROR 1
-# define PHILO_ERROR 2
-# define MALLOC_ERROR 3
-# define PROGRAMM_ERROR 4
-
-# include <string.h>
 # include <stdio.h>
-# include <stdlib.h>
 # include <unistd.h>
-# include <sys/time.h>
-# include <pthread.h>
 # include <limits.h>
+# include <pthread.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <string.h>
+# include <stdbool.h>
 
-typedef struct s_table	t_table;
+# define MAX_PHILO 200
+# define MIN_TIME 60
 
-typedef struct s_philosopher
+# define PROGRAMM_ERROR 0
+# define PHILO_ERROR 1
+# define INVALID_ARG_CNT_ERROR 2
+# define INVALID_ARGUMENT_ERROR 3
+// # define INVALID_TIME_ERROR 4
+
+typedef struct s_data	t_data;
+typedef pthread_mutex_t	t_mtx;
+
+typedef struct s_philo
 {
-	int				id;
-	int				meals_eaten;
-	long			last_meal_time;
-	t_table			*table;
-	pthread_t		thread;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	meals_mutex;
+	int			id;
+	int			meals_count;
+	int			last_meal_time;
+	bool		is_eat_full;
+	t_mtx		*left_fork;
+	t_mtx		*right_fork;
+	t_data		*data;
+	pthread_t	thread_id;
+}	t_philo;
 
-}	t_philosopher;
-
-typedef struct s_table
+struct s_data
 {
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				must_eat_count;
-	int				num_philosophers;
-	int				simulation_running;
-	long			start_time;
-	t_philosopher	*philosophers;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	simulation_mutex;
-	pthread_mutex_t	last_meal_time_mutex;
-	pthread_mutex_t	log_mutex;
-}	t_table;
+	int		philo_num;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+	int		must_eat_count;
+	int		start_simulation;
+	bool	end_simulation;
+	t_mtx	*forks;
+	t_philo	*philosophers;
+	t_mtx	log_mutex;
+};
 
-int		is_valid(int argc);
-int		ft_atoi(const char *nptr);
-void	ft_putstr_fd(char *s, int fd);
-void	throw_err(int nerr, t_table *data);
-void	init_data(t_table *data, int argc, char **argv);
-void	create_philosophers(t_table *data);
-void	log_action(t_philosopher *philo, const char *action,
-			t_table *data, int is_death);
-void	start_simulation(t_table *data);
-void	wait_philosophers(t_philosopher *philosophers);
-void	destroy_philo_mutexes(t_table *data);
-void	free_data(t_table *data);
-void	*philosopher_routine(void *arg);
-long	get_time_in_ms(void);
-
+int		throw_err(int err_type, t_data *data);
+void	clean(t_data *data);
+bool	parse_input(t_data *data, char **argv);
+bool	time_err(void);
+int		ft_atoi(char *str);
 #endif
