@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:27:06 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/12 13:30:17 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:05:50 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ bool	time_err(void)
 
 int	throw_err(int err_type, t_data *data)
 {
-	clean(data);
+	if (data)
+		clean(data);
 	if (err_type == INVALID_ARG_CNT_ERROR)
 	{
 		print_error("Error: Insufficient arguments.\n", NULL);
