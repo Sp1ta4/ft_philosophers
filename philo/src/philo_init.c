@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:37:00 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/13 19:03:32 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:09:13 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,26 @@ static bool	init_mutexes(t_data *data)
 
 static void	philo_init(t_data *data)
 {
-	int	i;
+	int		i;
+	t_philo	*philo;
 
 	i = -1;
 	while (++i < data->philo_num)
 	{
-		data->philosophers[i].id = i + 1;
-		data->philosophers[i].is_eat_full = false;
-		data->philosophers[i].meals_count = 0;
-		data->philosophers[i].first_fork = &data->forks[(i + 1) % data->philo_num];
-		data->philosophers[i].second_fork = &data->forks[i];
-		if (data->philosophers[i].id % 2)
+		philo = &data->philosophers[i];
+		philo->id = i + 1;
+		philo->is_eat_full = false;
+		philo->meals_count = 0;
+		philo->first_fork = &data->forks[(i + 1) % data->philo_num];
+		philo->second_fork = &data->forks[i];
+		if (philo->id % 2)
 		{
-			data->philosophers[i].first_fork = &data->forks[i];
-			data->philosophers[i].second_fork = &data->forks[(i + 1) % data->philo_num];
+			philo->first_fork = &data->forks[i];
+			philo->second_fork = &data->forks[(i + 1) % data->philo_num];
 		}
-		safe_mutex_handle(&data->philosophers[i].philo_mutex, INIT);
-		set_long(&data->philosophers[i].philo_mutex, &data->philosophers[i].last_meal_time, get_time_in_ms());
-		data->philosophers[i].data = data;
+		safe_mutex_handle(&philo->philo_mutex, INIT);
+		set_long(&philo->philo_mutex, &philo->last_meal_time, get_time_in_ms());
+		philo->data = data;
 	}
 }
 
@@ -60,7 +62,7 @@ bool	init_data(t_data *data)
 	i = -1;
 	while (++i < data->philo_num)
 	{
-		if(!safe_mutex_handle(&data->forks[i], INIT))
+		if (!safe_mutex_handle(&data->forks[i], INIT))
 			return (false);
 	}
 	if (!init_mutexes(data))

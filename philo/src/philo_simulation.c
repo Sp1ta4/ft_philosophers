@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:53:06 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/14 12:24:21 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:07:38 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	wait_all_philo_is_ready(t_data *data)
 {
 	while (!get_boolean(&data->data_mutex, &(data->all_threads_ready)))
 		;
-	
 }
 
 static void	do_single_philo(t_philo *philo)
@@ -37,15 +36,17 @@ void	try_eat(t_philo *philo)
 	inc_long(&philo->philo_mutex, &philo->meals_count);
 	log_action("is eating", philo);
 	ft_usleep(philo->data->time_to_eat);
-	if (philo->data->must_eat_count > 0 && get_long(&philo->philo_mutex, &philo->meals_count) >= philo->data->must_eat_count)
-   		set_boolean(&philo->philo_mutex, &philo->is_eat_full, true);
+	if (philo->data->must_eat_count > 0
+		&& get_long(&philo->philo_mutex, &philo->meals_count)
+		>= philo->data->must_eat_count)
+		set_boolean(&philo->philo_mutex, &philo->is_eat_full, true);
 	safe_mutex_handle(philo->first_fork, UNLOCK);
 	safe_mutex_handle(philo->second_fork, UNLOCK);
 }
 
 void	*philo_routine(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	wait_all_philo_is_ready(philo->data);
@@ -62,7 +63,6 @@ void	*philo_routine(void *arg)
 			ft_usleep(philo->data->time_to_sleep);
 			log_action("is thinking", philo);
 		}
-		
 	}
 	return (NULL);
 }
@@ -74,7 +74,8 @@ bool	start_simulation(t_data *data)
 	i = -1;
 	while (++i < data->philo_num)
 	{
-		if (!safe_thread_handle(&data->philosophers[i].thread_id, philo_routine, &data->philosophers[i], CREATE))
+		if (!safe_thread_handle(&data->philosophers[i].thread_id,
+				philo_routine, &data->philosophers[i], CREATE))
 			break ;
 	}
 	data->start_simulation = get_time_in_ms();

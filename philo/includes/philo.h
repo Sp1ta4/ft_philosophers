@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:32:09 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/13 21:29:11 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:04:50 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,19 @@ typedef struct s_philo
 
 struct s_data
 {
-	int		philo_num;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	long	start_simulation;
-	long	must_eat_count;
-	bool	end_simulation;
-	bool	is_cleaned;
-	bool	all_threads_ready;
-	t_mtx	data_mutex;
-	t_mtx	log_mutex;
-	t_mtx	*forks;
-	t_philo	*philosophers;
+	int			philo_num;
+	long		time_to_die;
+	long		time_to_eat;
+	long		time_to_sleep;
+	long		start_simulation;
+	long		must_eat_count;
+	bool		end_simulation;
+	bool		is_cleaned;
+	bool		all_threads_ready;
+	t_mtx		data_mutex;
+	t_mtx		log_mutex;
+	t_mtx		*forks;
+	t_philo		*philosophers;
 	pthread_t	monitor;
 };
 

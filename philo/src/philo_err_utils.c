@@ -6,18 +6,19 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:27:06 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/12 21:05:50 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:09:57 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	print_error(const char *err, const char *msg)
+static int	print_error(const char *err, const char *msg)
 {
 	if (msg)
 		printf("\033[1;31m%s\033[0m%s", err, msg);
 	else
 		printf("\033[1;31m%s\033[0m", err);
+	return (4);
 }
 
 static void	print_success(const char *scs, const char *msg)
@@ -59,8 +60,5 @@ int	throw_err(int err_type, t_data *data)
 		return (PHILO_ERROR);
 	}
 	else
-	{
-		print_error("Programm error!\n", NULL);
-		return (PROGRAMM_ERROR);
-	}
+		return (print_error("Programm error!\n", NULL));
 }

@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 11:25:34 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/13 21:29:04 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:05:27 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	inc_long(t_mtx *mutex, long *dest)
 	(*dest)++;
 	safe_mutex_handle(mutex, UNLOCK);
 }
-
 
 void	ft_usleep(long long time)
 {
@@ -52,10 +51,10 @@ static bool	destroy_mutexes(t_data *data)
 	return (true);
 }
 
-bool clean(t_data *data)
+bool	clean(t_data *data)
 {
 	if (!data || data->is_cleaned)
-		return true;
+		return (true);
 	data->is_cleaned = true;
 	if (!destroy_mutexes(data))
 		return (false);
@@ -67,4 +66,3 @@ bool clean(t_data *data)
 		free(data);
 	return (true);
 }
-
