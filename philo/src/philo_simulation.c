@@ -53,6 +53,8 @@ void	*philo_routine(void *arg)
 		do_single_philo(&philo->data->philosophers[0]);
 	else
 	{
+		if (philo->id % 2 == 0)
+			ft_usleep(100);
 		while (!is_simulation_finished(philo->data))
 		{
 			try_eat(philo);

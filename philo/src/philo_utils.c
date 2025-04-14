@@ -33,7 +33,7 @@ void	ft_usleep(long long time)
 	long long	start;
 
 	start = get_time_in_ms();
-	while (get_time_in_ms() - start <= time)
+	while ((get_time_in_ms() - start) < time)
 		usleep(500);
 }
 

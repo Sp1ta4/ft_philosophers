@@ -15,10 +15,12 @@
 static bool	check_philosopher_death(t_philo *philo)
 {
 	long	delta_time;
+	long	last_time;
 
 	if (get_boolean(&philo->philo_mutex, &philo->is_eat_full))
 		return (false);
-	delta_time = get_time_in_ms() - get_long(&philo->philo_mutex, &philo->last_meal_time);
+	last_time =  get_long(&philo->philo_mutex, &philo->last_meal_time);
+	delta_time = get_time_in_ms() - last_time;
 	if (delta_time > philo->data->time_to_die)
 		return (true);
 	return (false);
@@ -64,7 +66,7 @@ void	*monitor_simulation(void *arg)
 			set_boolean(&data->data_mutex, &data->end_simulation, true);
 			return (NULL);
 		}
-		ft_usleep(100);
+		// ft_usleep(100);
 	}
 	return (NULL);
 }
