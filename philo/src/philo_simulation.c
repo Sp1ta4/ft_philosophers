@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:53:06 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/13 21:38:43 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:24:21 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	do_single_philo(t_philo *philo)
 	ft_usleep(philo->data->time_to_die);
 	log_action("died", philo);
 	set_boolean(&philo->data->data_mutex, &philo->data->end_simulation, true);
-	set_boolean(&philo->philo_mutex, &philo->data->end_simulation, false);
 }
 
 void	try_eat(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:22:43 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/13 21:42:19 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:27:30 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	log_action(const char *action, t_philo *philo)
 		return ;
 	timestamp_in_ms = get_time_in_ms() - philo->data->start_simulation;
 	safe_mutex_handle(&philo->data->log_mutex, LOCK);
-	if (!get_boolean(&philo->data->data_mutex, &philo->data->end_simulation))
+	if (!is_simulation_finished(philo->data))
 		printf("%ld %d %s\n", timestamp_in_ms, philo->id, action);
 	safe_mutex_handle(&philo->data->log_mutex, UNLOCK);
 }
@@ -52,8 +52,8 @@ void	*monitor_simulation(void *arg)
 		{
 			if (check_philosopher_death(&data->philosophers[i]))
 			{
-				set_boolean(&data->data_mutex, &data->end_simulation, true);
 				log_action("died", &data->philosophers[i]);
+				set_boolean(&data->data_mutex, &data->end_simulation, true);
 				break;
 			}
 			if (get_boolean(&data->philosophers[i].philo_mutex, &data->philosophers[i].is_eat_full))
@@ -64,7 +64,7 @@ void	*monitor_simulation(void *arg)
 			set_boolean(&data->data_mutex, &data->end_simulation, true);
 			return (NULL);
 		}
-		ft_usleep(1000);
+		ft_usleep(100);
 	}
 	return (NULL);
 }
