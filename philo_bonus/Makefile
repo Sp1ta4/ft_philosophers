@@ -10,7 +10,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = cc
 RM = rm -f
-CFLAGS = -Wall -Werror -Wextra #-pthread -g3 -fsanitize=address #-fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra #aaaaaa-pthread -g3 -fsanitize=address #-fsanitize=thread
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

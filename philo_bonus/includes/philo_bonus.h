@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:32:09 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/15 20:36:40 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/15 22:02:23 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_philo
 	bool		is_eat_full;
 	sem_t		philo_sem;
 	t_data		*data;
-	pthread_t	thread_id;
+	pthread_t	monitor_thread;
 }	t_philo;
 
 struct s_data
