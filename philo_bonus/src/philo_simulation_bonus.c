@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:53:06 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/15 22:03:14 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:54:16 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	do_single_philo(t_philo *philo)
 
 void    try_eat(t_philo *philo)
 {
-    sem_wait_safe(philo->data->forks); // Взять первую вилку (семафор)
+    sem_wait_safe(philo->data->forks);
     log_action("has taken a fork", philo);
-    sem_wait_safe(philo->data->forks); // Взять вторую вилку (семафор)
+    sem_wait_safe(philo->data->forks);
     log_action("has taken a fork", philo);
     set_long(&philo->philo_sem, &philo->last_meal_time, get_time_in_ms());
     inc_long(&philo->philo_sem, &philo->meals_count);
@@ -35,8 +35,8 @@ void    try_eat(t_philo *philo)
         && get_long(&philo->philo_sem, &philo->meals_count)
         >= philo->data->must_eat_count)
         set_boolean(&philo->philo_sem, &philo->is_eat_full, true);
-    sem_post_safe(philo->data->forks); // Положить вторую вилку
-    sem_post_safe(philo->data->forks); // Положить первую вилку
+    sem_post_safe(philo->data->forks);
+    sem_post_safe(philo->data->forks);
 }
 
 void	*philo_routine(void *arg)
@@ -70,21 +70,23 @@ bool	start_simulation(t_data *data)
 	int	status;
 
 	i = -1;
+	data->start_simulation = get_time_in_ms();
+
 	while (++i < data->philo_num)
 	{
-		data->start_simulation = get_time_in_ms();	
 		if (!safe_fork_handle(&data->pids[i], FORK))
 			break;
 		if (data->pids[i] == 0)
 		{
-			sem_wait(data->all_threads_ready); // Ждем сигнала от родителя
-            philo_routine(&data->philosophers[i]);
-            exit(0);
+			sem_wait(data->all_threads_ready);
+			philo_routine(&data->philosophers[i]);
+			exit(0);
 		}
 	}
 	i = -1;
 	while (++i < data->philo_num)
-        sem_post(data->all_threads_ready);
+		sem_post(data->all_threads_ready);
+
 	i = -1;
 	while (++i < data->philo_num)
 	{
