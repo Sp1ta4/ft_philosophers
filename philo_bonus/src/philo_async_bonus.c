@@ -24,6 +24,7 @@ static bool	check_philosopher_death(t_philo *philo)
 	if (delta_time > philo->data->time_to_die)
 	{
 		log_action("died", philo);
+		sem_wait_safe(philo->data->log_sem);
 		exit(1);
 	}
 	return (false);
@@ -51,9 +52,7 @@ void	*monitor_simulation(void *arg)
 	{
 		if (get_boolean(&philo->philo_sem, &philo->is_eat_full))
 			exit(0);
-		if (check_philosopher_death(philo))
-			exit (1);
-
+		check_philosopher_death(philo);
 	}
 	return (NULL);
 }

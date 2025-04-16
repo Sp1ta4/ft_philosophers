@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:53:06 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/16 14:54:16 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:21:04 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void    try_eat(t_philo *philo)
     sem_post_safe(philo->data->forks);
 }
 
-void	*philo_routine(void *arg)
+void		philo_routine(void *arg)
 {
 	t_philo	*philo;
 
@@ -61,7 +61,8 @@ void	*philo_routine(void *arg)
 			log_action("is thinking", philo);
 		}
 	}
-	return (NULL);
+	clean(philo->data);
+	exit (0);
 }
 
 bool	start_simulation(t_data *data)
@@ -77,16 +78,8 @@ bool	start_simulation(t_data *data)
 		if (!safe_fork_handle(&data->pids[i], FORK))
 			break;
 		if (data->pids[i] == 0)
-		{
-			sem_wait(data->all_threads_ready);
 			philo_routine(&data->philosophers[i]);
-			exit(0);
-		}
 	}
-	i = -1;
-	while (++i < data->philo_num)
-		sem_post(data->all_threads_ready);
-
 	i = -1;
 	while (++i < data->philo_num)
 	{

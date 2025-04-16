@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:34:45 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/15 19:27:36 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:11:16 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,7 @@ bool	sem_destroy_safe(sem_t *sem, const char *name)
 		print_error("Program error!\n", "sem_close failed\n");
 		return (false);
 	}
-	if (sem_unlink(name) == -1)
-	{
-		print_error("Program error!\n", "sem_unlink failed\n");
-		return (false);
-	}
+	sem_unlink(name);
 	return (true);
 }
 
