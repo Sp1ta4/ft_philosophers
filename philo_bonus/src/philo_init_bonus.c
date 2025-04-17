@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:37:00 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/16 14:44:12 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:59:23 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static bool	init_semaphores(t_data *data)
 		return (false);
 	return (true);
 }
-
 
 static void	philo_init(t_data *data)
 {

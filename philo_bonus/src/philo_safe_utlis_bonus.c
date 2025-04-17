@@ -6,35 +6,11 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:34:45 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/16 17:11:16 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:58:52 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-static bool	handle_thread_err(int status)
-{
-	if (status == 0)
-		return (true);
-	else
-	{
-		throw_err(PROGRAMM_ERROR, NULL);
-		return (false);
-	}
-}
-
-void	*safe_malloc(size_t bytes, t_data *data)
-{
-	void	*malloced;
-
-	malloced = malloc(bytes);
-	if (!malloced)
-	{
-		throw_err(PROGRAMM_ERROR, data);
-		return (NULL);
-	}
-	return (malloced);
-}
 
 bool	safe_semaphore_init(sem_t **sem, const char *name, int value)
 {
@@ -85,28 +61,13 @@ bool	sem_destroy_safe(sem_t *sem, const char *name)
 	return (true);
 }
 
-
-
-bool	safe_thread_handle(pthread_t *thread, void *(*fnc)(void *),
-		void *data, t_opcode opcode)
+bool	safe_fork_handle(pid_t *pid, t_opcode op)
 {
-	if (opcode == CREATE)
-		return (handle_thread_err(pthread_create(thread, NULL, fnc, data)));
-	else if (opcode == JOIN)
-		return (handle_thread_err(pthread_join(*thread, NULL)));
-	else if (opcode == DETACH)
-		return (handle_thread_err(pthread_detach(*thread)));
-	else
-		return (!throw_err(PROGRAMM_ERROR, NULL));
-}
-
-bool safe_fork_handle(pid_t *pid, t_opcode op)
-{
-    if (op == FORK)
+	if (op == FORK)
 	{
 		*pid = fork();
 		if (*pid < 0)
-			return !print_error("Programm error!\n", "Failed create fork\n");
+			return (!print_error("Programm error!\n", "Failed create fork\n"));
 		return (true);
 	}
 	else if (op == WAIT)

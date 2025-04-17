@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 11:25:34 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/15 21:45:24 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:52:53 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,34 +49,29 @@ static bool	close_semaphores(t_data *data)
 	return (true);
 }
 
-
 bool	clean(t_data *data)
 {
-	
+	int	i;
+
 	if (!data || data->is_cleaned)
 		return (true);
 	data->is_cleaned = true;
 	if (!close_semaphores(data))
 		return (false);
-	 if (data->philosophers)
-    {
-        for (int i = 0; i < data->philo_num; ++i)
-        {
-            sem_destroy(&(data->philosophers[i].philo_sem));
-        }
-        free(data->philosophers);
-        data->philosophers = NULL;
-    }
+	if (data->philosophers)
+	{
+		i = -1;
+		while (++i < data->philo_num)
+			sem_destroy(&(data->philosophers[i].philo_sem));
+		free(data->philosophers);
+		data->philosophers = NULL;
+	}
 	if (data->pids)
 	{
 		free(data->pids);
 		data->pids = NULL;
 	}
 	if (data)
-	{
 		free(data);
-		data = NULL;
-	}
-	
 	return (true);
 }

@@ -6,12 +6,12 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:32:09 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/04/16 14:43:32 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:49:56 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <pthread.h>
 # include <semaphore.h>
